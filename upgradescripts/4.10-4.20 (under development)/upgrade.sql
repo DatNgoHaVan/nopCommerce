@@ -873,10 +873,10 @@ set @resources='
     <Value>Not good</Value>
   </LocaleResource>
   <LocaleResource Name="Admin.Plugins.Errors.UninstallDependsOn">
-    <Value>The following plugins depend on the "{0}" plugin and must be uninstalled beforehand: {1}</Value>
+    <Value>The following plugins depend on the "{0}" plugin and must be uninstalled beforehand: "{1}"</Value>
   </LocaleResource>  
   <LocaleResource Name="Admin.Plugins.Errors.InstallDependsOn">
-    <Value>The "{0}" plugin depends on the following plugins which must be installed beforehand: {1}</Value>
+    <Value>The "{0}" plugin depends on the following plugins which must be installed beforehand: "{1}"</Value>
   </LocaleResource>   
 </Language>'
 

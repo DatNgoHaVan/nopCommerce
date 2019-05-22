@@ -133,7 +133,7 @@ namespace Nop.Services.Plugins
         /// <param name="pluginDescriptor">Plugin descriptor to check</param>
         /// <param name="dependsOnSystemName">Other plugin system name</param>
         /// <returns>Result of check</returns>
-        protected virtual bool FilterByDepensOn(PluginDescriptor pluginDescriptor, string dependsOnSystemName)
+        protected virtual bool FilterByDependsOn(PluginDescriptor pluginDescriptor, string dependsOnSystemName)
         {
             if (pluginDescriptor == null)
                 throw new ArgumentNullException(nameof(pluginDescriptor));
@@ -169,7 +169,7 @@ namespace Nop.Services.Plugins
                 FilterByCustomer(descriptor, customer) &&
                 FilterByStore(descriptor, storeId) &&
                 FilterByPluginGroup(descriptor, group) &&
-                FilterByDepensOn(descriptor, dependsOnSystemName));
+                FilterByDependsOn(descriptor, dependsOnSystemName));
 
             //filter by the passed type
             if (typeof(TPlugin) != typeof(IPlugin))
@@ -320,6 +320,8 @@ namespace Nop.Services.Plugins
                 {
                     if (!_pluginsInfo.InstalledPluginNames.Contains(dependentPlugin.SystemName))
                         continue;
+                    if(_pluginsInfo.PluginNamesToUninstall.Contains(dependentPlugin.SystemName))
+                        continue;
 
                     dependsOn.Add(string.IsNullOrEmpty(dependentPlugin.FriendlyName)
                         ? dependentPlugin.SystemName
@@ -457,7 +459,7 @@ namespace Nop.Services.Plugins
             var customerActivityService = EngineContext.Current.Resolve<ICustomerActivityService>();
 
             //uninstall plugins
-            foreach (var descriptor in pluginDescriptors)
+            foreach (var descriptor in pluginDescriptors.OrderByDescending(pluginDescriptor => pluginDescriptor.DisplayOrder))
             {
                 try
                 {
